@@ -1,0 +1,31 @@
+  $('#kdbarang').keydown(function(e) {
+        if (e.keyCode == 13) {
+            e.preventDefault();
+            let kodebarang = $('#kdbarang').val();
+
+            $.ajax({
+                type: "post",
+                url: "/barangmasuk/ambilDataBarang",
+                data: {
+                    kodebarang: kodebarang
+                },
+                dataType: "json",
+                success: function(response) {
+                    if (response.sukses) {
+                        let data = response.sukses;
+                        $('#namabarang').val(data.namabarang);
+                        $('#hargabeli').val(data.hargabeli);
+
+                        $('#jumlah').focus();
+                    }
+                    if (response.error) {
+                        alert(response.error);
+                        kosong();
+                    }
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status + '\n' + thrownError);
+                }
+            });
+        }
+    });
